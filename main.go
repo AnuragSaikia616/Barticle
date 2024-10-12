@@ -1,18 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	gowiki "github.com/trietmn/go-wiki"
 )
 
 type model struct {
-	index    int
 	width    int
 	height   int
 	messages []string
@@ -26,7 +25,7 @@ func InitModel() model {
 	ta.Placeholder = "get summary!!!"
 	ta.CharLimit = 500
 	ta.Focus()
-	vp := viewport.New(50, 20)
+	vp := viewport.New(100, 20)
 	return model{
 		textarea: ta,
 		viewport: vp,
@@ -46,6 +45,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		case "ctrl+r":
 			m.textarea.Placeholder = "get summary!!!"
+			m.summary = ""
 			return m, nil
 		case tea.KeyEnter.String():
 			v := m.textarea.Value()
@@ -54,11 +54,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			if m.summary == "" {
 				summ, _ := gowiki.Summary(v, 5, -1, false, true)
-				m.messages = append(m.messages, summ)
+				m.messages = append(m.messages, serverStyle.Render("SUMMARY:"), summ)
 				m.summary = summ
 				m.textarea.Placeholder = "ask questions!"
+			} else {
+				m.messages = append(m.messages, questionStyle.Render("QUESTION:"), v)
+				m.messages = append(m.messages, answerStyle.Render("ANSWER:"), "answer to the question!!!")
 			}
-			m.messages = append(m.messages, v)
 			m.viewport.SetContent(strings.Join(m.messages, "\n"))
 			m.textarea.Reset()
 			m.viewport.GotoBottom()
@@ -73,7 +75,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	return lipgloss.JoinVertical(lipgloss.Center, m.textarea.View(), m.viewport.View())
+	// return lipgloss.JoinVertical(lipgloss.Center, m.textarea.View(), m.viewport.View())
+	return fmt.Sprintf("\n%s\n%s\n", m.textarea.View(), m.viewport.View())
 }
 
 func (m model) Init() tea.Cmd {
