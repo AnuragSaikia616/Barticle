@@ -1,4 +1,4 @@
-package client
+package main
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	conn, err := net.Dial("IPv4", ":9000")
+	conn, err := net.Dial("tcp4", ":9000")
 	defer conn.Close()
 	if err != nil {
 		fmt.Println(err)

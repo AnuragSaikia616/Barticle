@@ -20,8 +20,9 @@ func main() {
 			fmt.Println(err)
 			continue
 		}
-		buff := make([]byte, 1024)
-		conn.Read(buff)
-		fmt.Println(buff)
+		go handleConnection(conn)
 	}
+}
+
+func handleConnection(c net.Conn) {
 }
