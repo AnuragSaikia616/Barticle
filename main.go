@@ -8,7 +8,6 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
-	gowiki "github.com/trietmn/go-wiki"
 )
 
 type model struct {
@@ -53,7 +52,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 			if m.summary == "" {
-				summ, _ := gowiki.Summary(v, 5, -1, false, true)
+				// summ, _ := gowiki.Summary(v, 5, -1, false, true)
+				// page, _ := gowiki.GetPage(v, -1, true, false)
+				// content, _ := page.GetContent()
+				summ, err := getSummary(v)
+				if err != nil {
+					m.messages = append(m.messages, errorStyle.Render("ERROR:"), err.Error())
+				}
+
 				m.messages = append(m.messages, serverStyle.Render("SUMMARY:"), summ)
 				m.summary = summ
 				m.textarea.Placeholder = "ask questions!"
@@ -75,7 +81,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	// return lipgloss.JoinVertical(lipgloss.Center, m.textarea.View(), m.viewport.View())
 	return fmt.Sprintf("\n%s\n%s\n", m.textarea.View(), m.viewport.View())
 }
 

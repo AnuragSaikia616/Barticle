@@ -6,6 +6,7 @@ const (
 	pink  = "#ffaadd"
 	blue  = "#22ddff"
 	green = "#33ff99"
+	red   = "#ff0000"
 )
 
 var (
@@ -15,4 +16,6 @@ var (
 			Foreground(lipgloss.Color(blue))
 	answerStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color(green))
+	errorStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color(red))
 )
