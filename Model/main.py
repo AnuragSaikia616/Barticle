@@ -1,11 +1,12 @@
+import time
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import (
     pipeline,
 )
 
-qa_pipeline = pipeline("question-answering", model="qa_model")
-summarizer = pipeline("summarization", model="summ_model")
+qa_pipeline = pipeline("question-answering", model="./Model/qa_model")
+summarizer = pipeline("summarization", model="./Model/summ_model")
 
 app = FastAPI()
 
@@ -20,8 +21,11 @@ class qaTextInput(BaseModel):
 
 
 @app.post("/summarize/")
-def summarize(input: SumTextInput):
+async def summarize(input: SumTextInput):
+    start_time = time.time()
     summary = summarize_text(summarizer, input.text)
+    end_time = time.time()
+    print(f"SUMMARY_TIME: {end_time - start_time}")
     return {"summary": summary}
 
 
@@ -31,7 +35,7 @@ async def answer(input: qaTextInput):
     return {"answer": answer}
 
 
-def summarize_text(summarizer, text, max_length=130, min_length=100):
+def summarize_text(summarizer, text, max_length=130, min_length=30):
     return summarizer(
         text, max_length=max_length, min_length=min_length, do_sample=False
     )[0]["summary_text"]

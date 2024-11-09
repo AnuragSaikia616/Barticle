@@ -40,3 +40,8 @@ func getSummary(text string) (string, error) {
 	}
 	return respSummary.Summary, nil
 }
+
+// TODO
+func getAnswer(question string, context string) (string, error) {
+	return "", nil
+}
