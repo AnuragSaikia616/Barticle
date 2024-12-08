@@ -1,0 +1,6 @@
+transformers
+datasets 
+fastapi[standard]
+pydantic
+torch
+beautifulsoup4
