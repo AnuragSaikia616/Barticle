@@ -11,26 +11,26 @@ python
 ## Building
 
 Docker can be used to build the api
-'''bash
+`''bash
 docker build -t barticle ./api
-'''
+`''
 To build the client using go do the following
-'''bash
+`''bash
 go build -o bin/Barticle
-'''
+`''
 To run the docker image in a container
-'''bash
+`''bash
 docker run -p 8000:8000 barticle
-'''
+`''
 
 ## Running the application
 
 using the cli
-'''bash
+`''bash
 ./bin/Barticle summary textfile1.txt textfile2.txt
 ./bin/Barticle summary --url <https://en.wikipedia.org/wiki/The_Jungle_Book>
-'''
+`''
 to run the TUI
-'''bash
+`''bash
 ./bin/Barticle
-'''
+`''
