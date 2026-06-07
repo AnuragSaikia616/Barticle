@@ -2,7 +2,6 @@ from transformers import (
     AutoModelForQuestionAnswering,
     AutoTokenizer,
     AutoModelForSeq2SeqLM,
-    pipeline,
     TrainingArguments,
     Trainer,
     DefaultDataCollator,
@@ -129,20 +128,10 @@ def buildAndSaveModels():
     qa_model, qa_tokenizer = load_qa_model()
     summarization_model, summarization_tokenizer = load_summarization_model()
 
-    qa_pipeline = pipeline(
-        "question-answering",
-        model=qa_model,
-        tokenizer=qa_tokenizer,
-        device=0 if torch.cuda.is_available() else -1,
-    )
-    summarizer = pipeline(
-        "summarization",
-        model=summarization_model,
-        tokenizer=summarization_tokenizer,
-        device=0 if torch.cuda.is_available() else -1,
-    )
-    qa_pipeline.save_pretrained("./Model/qa_model")
-    summarizer.save_pretrained("./Model/summ_model")
+    qa_model.save_pretrained("./Model/qa_model")
+    qa_tokenizer.save_pretrained("./Model/qa_model")
+    summarization_model.save_pretrained("./Model/summ_model")
+    summarization_tokenizer.save_pretrained("./Model/summ_model")
 
     if os.path.exists("Model/qa_model"):
         print("INFO: question-answering model saved")
