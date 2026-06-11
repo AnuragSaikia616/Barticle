@@ -13,15 +13,17 @@ import os
 
 def load_qa_model(model_name="deepset/roberta-base-squad2"):
     print("INFO: loading model roberta")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForQuestionAnswering.from_pretrained(model_name)
+    model = AutoModelForQuestionAnswering.from_pretrained(model_name).to(device)
     return model, tokenizer
 
 
 def load_summarization_model(model_name="facebook/bart-large-cnn"):
-    print("INFO: loading model bart")
+    print("INFO: loading model bert")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
     return model, tokenizer
 
 
