@@ -1,7 +1,7 @@
 import logging
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = ""mport os
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 from datetime import datetime
 
 from fastapi import FastAPI
