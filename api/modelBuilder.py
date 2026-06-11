@@ -6,10 +6,10 @@ from transformers import (
     Trainer,
     DefaultDataCollator,
 )
+import os
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 import torch
 from datasets import load_dataset
-import os
 
 
 def load_qa_model(model_name="deepset/roberta-base-squad2"):
