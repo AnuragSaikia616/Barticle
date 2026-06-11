@@ -6,6 +6,7 @@ from transformers import (
     Trainer,
     DefaultDataCollator,
 )
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 import torch
 from datasets import load_dataset
 import os
