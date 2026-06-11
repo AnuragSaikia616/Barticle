@@ -1,5 +1,7 @@
 import logging
 import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = ""mport os
 from datetime import datetime
 
 from fastapi import FastAPI
@@ -8,6 +10,7 @@ from transformers import pipeline
 
 from .modelUtils import get_answer, summarize_text
 from .scraper import extract
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -36,7 +39,7 @@ def _load_summarizer():
         return _summarizer
     path = os.path.join(MODEL_DIR, "summ_model")
     logger.info("Loading summarization model from %s …", path)
-    _summarizer = pipeline("summarization", model=path)
+    _summarizer = pipeline("summarization", model=path,device=1)
     logger.info("Summarization model loaded")
     return _summarizer
 
@@ -47,7 +50,7 @@ def _load_qa_pipeline():
         return _qa_pipeline
     path = os.path.join(MODEL_DIR, "qa_model")
     logger.info("Loading QA model from %s …", path)
-    _qa_pipeline = pipeline("question-answering", model=path)
+    _qa_pipeline = pipeline("question-answering", model=path,device=1)
     logger.info("QA model loaded")
     return _qa_pipeline
 
